@@ -1,0 +1,19 @@
+.login__image--container {
+    background-image: url(https://images.unsplash.com/photo-1473187983305-f615310e7daa?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHNob3B8ZW58MHx8MHx8fDA%3D);
+    height: 100vh;
+    background-size: cover;
+}
+
+.login__form--container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    justify-content: center;
+}
+
+@media screen and (max-width: 756px) {
+    .login__image--container {
+        display: none;
+    }
+}
