@@ -12,9 +12,13 @@ const io = new Server(server, {
 });
 dotenv.config();
 
+import User from './models/User.js';
+import userRoutes from './routes/userRoutes.js';
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use('/users', userRoutes)
 
 server.listen(8080, () => {
     console.log('server running at port', 8080);
