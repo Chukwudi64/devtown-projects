@@ -14,11 +14,13 @@ dotenv.config();
 
 import User from './models/User.js';
 import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/users', userRoutes)
+app.use('/users', userRoutes);
+app.use('/products', productRoutes);
 
 server.listen(8080, () => {
     console.log('server running at port', 8080);
