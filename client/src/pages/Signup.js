@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './Signup.css';
+import { useSignupMutation } from '../services/appApi';
 
 const Signup = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [signup, { error, isLoading, isError }] = useSignupMutation();
+
+    const handleSignup = (e) => {
+        e.preventDefault();
+        signup({ name, email, password });
+    }
+
   return (
     <Container>
         <Row>
             <Col md={6} className='signup__form--container'>
-                <Form style={{ width: "100%" }}>
+                <Form style={{ width: "100%" }} onSubmit={handleSignup}>
                     <h1>Create an account</h1>
+                    {isError && <Alert variant="danger">{error.data}</Alert>}
+                    <Form.Group>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control type='text' placeholder='Enter your name' value={name} required onChange={(e) => setName(e.target.value)} />
+                    </Form.Group>
+
                     <Form.Group>
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type='email' placeholder='Enter email' value={email} required onChange={(e) => setEmail(e.target.value)} />
@@ -23,7 +38,9 @@ const Signup = () => {
                     </Form.Group>
 
                     <Form.Group>
-                        <Button type='submit'>Create account</Button>
+                        <Button type='submit' disabled={isLoading}>
+                            Create account
+                        </Button>
                     </Form.Group>
                     <p>
                         Have an account? <Link to="/login">Login</Link>
