@@ -31,6 +31,13 @@ const Navigation = () => {
                 <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             )}
+            {user && !user.isAdmin && (
+              <LinkContainer to="/cart">
+                <Nav.Link>
+                  <i className="fas fa-shopping-cart"></i>
+                </Nav.Link>
+              </LinkContainer>
+            )}
             {/* if user */}
             {user && (
               <NavDropdown title={`${user.email}`} id="basic-nav-dropdown">
