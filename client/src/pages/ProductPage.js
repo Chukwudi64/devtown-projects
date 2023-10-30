@@ -9,12 +9,14 @@ import Loading from '../components/Loading';
 import SimilarProduct from '../components/SimilarProduct';
 import './ProductPage.css';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useAddToCartMutation } from '../services/appApi';
 
 const ProductPage = () => {
     const {id} = useParams();
     const user = useSelector(state => state.user);
     const [product, setProduct] = useState(null);
     const [similar, setSimilar] = useState(null);
+    const [addToCart, { isSuccess }] = useAddToCartMutation();
 
     const handleDragStart = (e) => e.preventDefault();
     useEffect(() => {
@@ -70,7 +72,7 @@ const ProductPage = () => {
                             <option value="4">4</option>
                             <option value="5">5</option>
                         </Form.Select>
-                        <Button size='lg'>Add to cart</Button>
+                        <Button size='lg' onClick={() => addToCart ({userId: user._id, productId: id, price: product.price, image: product.pictures[0].url})}>Add to cart</Button>
                     </ButtonGroup>
                 )}
                 {user && user.isAdmin && (
