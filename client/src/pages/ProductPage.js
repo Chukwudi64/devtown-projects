@@ -10,6 +10,7 @@ import SimilarProduct from '../components/SimilarProduct';
 import './ProductPage.css';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useAddToCartMutation } from '../services/appApi';
+import ToastMessage from '../components/ToastMessage';
 
 const ProductPage = () => {
     const {id} = useParams();
@@ -80,6 +81,7 @@ const ProductPage = () => {
                         <Button size='lg'>Edit Product</Button>
                     </LinkContainer>
                 )}
+                {isSuccess && <ToastMessage bg="info" title="Added to cart" body={`${product.name} is in your cart`} />}
             </Col>
         </Row>
         <div className='my-4'>
