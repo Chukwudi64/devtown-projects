@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import User from "../models/User.js";
+import Order from "../models/Order.js";
 
 // signup
 router.post('/signup', async(req, res) => {
@@ -30,6 +31,16 @@ router.get('/', async(req, res) => {
     try {
         const users = await User.find({ isAdmin: false }).populate('orders');
         res.json(users);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+})
+
+router.get('/:id/orders', async(req, res) => {
+    const {id} = req.params;
+    try {
+        const user = await User.findById(id).populate('orders');
+        res.json(user.orders);
     } catch (error) {
         res.status(400).send(error.message);
     }

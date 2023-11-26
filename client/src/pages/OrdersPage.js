@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Badge, Container, Table } from "react-bootstrap";
 import { useSelector } from 'react-redux';
 import axios from '../axios';
 import './OrdersPage.css';
+import Loading from '../components/Loading';
 
 const OrdersPage = () => {
     const user = useSelector((state) => state.user);
@@ -23,7 +25,14 @@ const OrdersPage = () => {
             console.log(e);
         });
     }, []);
-    
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    if (orders.length === 0) {
+        return <h1 className='text-center pt-3'>No orders yet</h1>;
+    }
 
   return (
     <Container>
@@ -33,8 +42,8 @@ const OrdersPage = () => {
                 <tr>
                     <th>#</th>
                     <th>Status</th>
+                    <th>Date</th>
                     <th>Total</th>
-                    <th>&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +55,8 @@ const OrdersPage = () => {
                                 {order.status}
                             </Badge>
                         </td>
-
+                        <td>{order.date}</td>
+                        <td>${order.total}</td>
                     </tr>
                 ))}
             </tbody>
