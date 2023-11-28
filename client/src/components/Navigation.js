@@ -48,7 +48,7 @@ const Navigation = () => {
               <NavDropdown title={`${user.email}`} id="basic-nav-dropdown">
                 {user.isAdmin && (
                   <>
-                    <LinkContainer to="/dashboard">
+                    <LinkContainer to="/admin">
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/new-product">
