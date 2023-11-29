@@ -36,6 +36,7 @@ router.get('/', async(req, res) => {
     }
 })
 
+//get user orders
 router.get('/:id/orders', async(req, res) => {
     const {id} = req.params;
     try {
@@ -43,6 +44,22 @@ router.get('/:id/orders', async(req, res) => {
         res.json(user.orders);
     } catch (error) {
         res.status(400).send(error.message);
+    }
+})
+
+//update user notifications
+router.post('/:id/updateNotifications', async(req, res) => {
+    const {id} = req.params;
+    try {
+        const user = await User.findById(id);
+        user.notifications.forEach((notif) => {
+            notif.status = "read"
+        });
+        user.markModified('notifications');
+        await user.save();
+        res.status(200).send();
+    } catch (error) {
+        res.status(400).send(error.message)
     }
 })
 

@@ -50,6 +50,32 @@ const OrdersAdminPage = () => {
     if (orders.length === 0) {
         return <h1 className='text-center pt-4'>No orders yet</h1>;
     }
+
+    function TableRow({ _id, count, owner, total, status, products, address }) {
+        return (
+            <tr>
+                <td>{_id}</td>
+                <td>{owner?.name}</td>
+                <td>{count}</td>
+                <td>{total}</td>
+                <td>{address}</td>
+                <td>
+                    {status === "processing" ? (
+                        <Button size="sm" onClick={() => markShipped(_id, owner?._id)}>
+                            Mark as shipped
+                        </Button>
+                    ) : (
+                        <Badge bg="success">Shipped</Badge>
+                    )}
+                </td>
+                <td>
+                    <span style={{ cursor: "pointer" }} onClick={() => showOrder(products)}>
+                        View order <i className="fa fa-eye"></i>
+                    </span>
+                </td>
+            </tr>
+        );
+    }
     
 
   return (
@@ -65,29 +91,7 @@ const OrdersAdminPage = () => {
                 </tr>
             </thead>
             <tbody>
-                {orders.map((order) => (
-                    <tr>
-                        <td>{order._id}</td>
-                        <td>{order.owner?.name}</td>
-                        <td>{order.count}</td>
-                        <td>{order.total}</td>
-                        <td>{order.address}</td>
-                        <td>
-                            {order.status === "processing" ? ( 
-                                <Button size='sm' onClick={() => markShipped(order._id, order.owner?._id)}>
-                                    Mark as shipped
-                                </Button> 
-                            ) : ( 
-                                <Badge bg="success">Shipped</Badge>
-                            )}
-                        </td>
-                        <td>
-                            <span style={{cursor: 'pointer'}} onClick={() => showOrder(order.products)}>
-                                View order <i className='fa fa-eye'></i>
-                            </span>
-                        </td>
-                    </tr>
-                ))}
+                    <Pagination data={orders} RenderComponent={TableRow} pageLimit={1} dataLimit={10} tablePagination={true} />
             </tbody>
         </Table>
 

@@ -8,8 +8,8 @@ import stripe from 'stripe';
 const server = http.createServer(app);
 import { Server } from 'socket.io';
 const io = new Server(server, {
-    cors: '*',
-    methods: '*'
+    cors: 'http://localhost:3000',
+    methods: ["GET", "POST", "PATCH", "DELETE"]
 });
 dotenv.config();
 
@@ -44,6 +44,8 @@ app.post('/create-payment', async(req, res) => {
 server.listen(8080, () => {
     console.log('server running at port', 8080);
 })
+
+app.set('socketio', io);
 
 mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => console.log('Connected to mongoDB'))

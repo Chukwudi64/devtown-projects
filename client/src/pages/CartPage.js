@@ -27,7 +27,7 @@ const CartPage = () => {
   return (
     <Container style={{minHeight: '95vh'}} className='cart-container'>
         <Row>
-            <Col md={7}>
+            <Col>
                 <h1 className="pt-2 h3">
                     Shopping cart
                 </h1>
@@ -39,8 +39,8 @@ const CartPage = () => {
                     </Elements>
                 )}
             </Col>
+            {cart.length > 0 && (
             <Col md={5}>
-                {cart.length > 0 && (
                     <>
                         <Table responsive="sm" className='cart-table'>
                             <thead>
@@ -78,8 +78,8 @@ const CartPage = () => {
                             <h3 className="h4 pt-4">Total: ${user.cart.total}</h3>
                         </div>
                     </>
-                )}
             </Col>
+                )}
         </Row>
     </Container>
   );

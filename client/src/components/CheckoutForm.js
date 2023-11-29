@@ -46,7 +46,8 @@ const CheckoutForm = () => {
         }
     }
 
-  return <Col md={7} className='cart-payment-container'>
+  return ( 
+  <Col className='cart-payment-container'>
     <Form onSubmit={handlePay}>
         <Row>
             {alertMessage && <Alert>{alertMessage}</Alert>}
@@ -90,6 +91,7 @@ const CheckoutForm = () => {
         <Button className='mt-3' type='submit' disabled={user.cart.count <= 0 || paying || isSuccess}>{paying ? "Processing..." : "Pay"}</Button>
     </Form>
   </Col>
+  )
 }
 
 export default CheckoutForm;

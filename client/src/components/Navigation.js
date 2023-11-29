@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,18 +6,36 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../features/userSlice';
+import { logout, resetNotifications } from '../features/userSlice';
+import axios from "../axios";
 import './Navigation.css';
 
 const Navigation = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const bellRef = useRef(null);
+  const notificationRef = useRef(null);
+  const [bellPos, setBellPos] = useState({});
+
   const handleLogout = () => {
     dispatch(logout());
   }
 
+  const unreadNotifications = user?.notifications?.reduce((acc, current) => {
+    if (current.status == "unread") return acc + 1;
+    return acc;
+  }, 0);
+
+  const handleToggleNotifications = () => {
+    const position = bellRef.current.getBoundingClientRect();
+    setBellPos(position);
+    notificationRef.current.style.display = notificationRef.current.style.display === "block" ? "none" : "block";
+    dispatch(resetNotifications());
+    if (unreadNotifications > 0) axios.post(`/users/${user._id}/updateNotifications`);
+  }
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar bg="light" expand="lg">
       <Container>
         <LinkContainer to="/">
           <Navbar.Brand>Ecommerce Application</Navbar.Brand>
@@ -45,6 +63,10 @@ const Navigation = () => {
             )}
             {/* if user */}
             {user && (
+              <>
+              <Nav.Link style={{position: "relative"}} onClick={handleToggleNotifications}>
+                <i className='fas fa-bell' ref={bellRef} data-count={unreadNotifications || null}></i>
+              </Nav.Link>
               <NavDropdown title={`${user.email}`} id="basic-nav-dropdown">
                 {user.isAdmin && (
                   <>
@@ -71,10 +93,25 @@ const Navigation = () => {
                   Logout
                 </Button>
               </NavDropdown>
+              </>
             )}
           </Nav>
         </Navbar.Collapse>
       </Container>
+      {/* notifications */}
+      <div className='notifications-container' ref={notificationRef} style={{position: 'absolute', top: bellPos.top + 30, left: bellPos.left, display: "none" }}>
+        {user?.notifications.length > 0 ? (
+        user?.notifications.map((notification) => (
+          <p className={`notification-${notification.status}`}>
+            {notification.message}
+            <br />
+            <span>{notification.time.split("T")[0] + " " + notification.time.split("T")[1]}</span>
+          </p>
+        ))
+        ) : (
+          <p>No notifications yet</p>
+        )}
+      </div>
     </Navbar>
   );
 }
