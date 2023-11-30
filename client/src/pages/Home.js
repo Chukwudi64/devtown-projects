@@ -20,6 +20,7 @@ const Home = () => {
   return (
     <div>
       <img src="https://res.cloudinary.com/learn-code-10/image/upload/v1653947013/yqajnhqf7usk56zkwqi5.png" alt="" className='home-banner' />
+
       <div className="featured-products-container container mt-4">
         <h2>Last products</h2>
         {/* last products here */}
